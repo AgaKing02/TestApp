@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="icon" href="https://www.flaticon.com/premium-icon/icons/svg/562/562678.svg">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        page-inner.no-page-title {
+            padding-top: 30px;
+        }
+        .page-inner {
+            position: relative;
+            min-height: calc(100% - 56px);
+            padding: 20px 30px 40px 30px;
+            background: #f3f4f7;
+        }
+        .card.card-white {
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
+            padding: 25px;
+        }
+        .grid-margin {
+            margin-bottom: 2rem;
+        }
+        .profile-timeline ul li .timeline-item-header {
+            width: 100%;
+            overflow: hidden;
+        }
+        .profile-timeline ul li .timeline-item-header img {
+            width: 40px;
+            height: 40px;
+            float: left;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+        .profile-timeline ul li .timeline-item-header p {
+            margin: 0;
+            color: #000;
+            font-weight: 500;
+        }
+        .profile-timeline ul li .timeline-item-header p span {
+            margin: 0;
+            color: #8e8e8e;
+            font-weight: normal;
+        }
+        .profile-timeline ul li .timeline-item-header small {
+            margin: 0;
+            color: #8e8e8e;
+        }
+        .profile-timeline ul li .timeline-item-post {
+            padding: 20px 0 0 0;
+            position: relative;
+        }
+        .profile-timeline ul li .timeline-item-post > img {
+            width: 100%;
+        }
+        .timeline-options {
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 10px 0 10px 0;
+        }
+        .timeline-options a {
+            display: block;
+            margin-right: 20px;
+            float: left;
+            color: #2b2b2b;
+            text-decoration: none;
+        }
+        .timeline-options a i {
+            margin-right: 3px;
+        }
+        .timeline-options a:hover {
+            color: #5369f8;
+        }
+        .timeline-comment {
+            overflow: hidden;
+            margin-bottom: 10px;
+            width: 100%;
+            border-bottom: 1px solid #f1f1f1;
+            padding-bottom: 5px;
+        }
+        .timeline-comment .timeline-comment-header {
+            overflow: hidden;
+        }
+        .timeline-comment .timeline-comment-header img {
+            width: 30px;
+            border-radius: 50%;
+            float: left;
+            margin-right: 10px;
+        }
+        .timeline-comment .timeline-comment-header p {
+            color: #000;
+            float: left;
+            margin: 0;
+            font-weight: 500;
+        }
+        .timeline-comment .timeline-comment-header small {
+            font-weight: normal;
+            color: #8e8e8e;
+        }
+        .timeline-comment p.timeline-comment-text {
+            display: block;
+            color: #2b2b2b;
+            font-size: 14px;
+            padding-left: 40px;
+        }
+        .post-options {
+            overflow: hidden;
+            margin-top: 15px;
+            margin-left: 15px;
+        }
+        .post-options a {
+            display: block;
+            margin-top: 5px;
+            margin-right: 20px;
+            float: left;
+            color: #2b2b2b;
+            text-decoration: none;
+            font-size: 16px !important;
+        }
+        .post-options a:hover {
+            color: #5369f8;
+        }
+        .online {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            display: block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+        .online.on {
+            background: #2ec5d3;
+        }
+        .online.off {
+            background: #ec5e69;
+        }
+        #cd-timeline::before {
+            border: 0;
+            background: #f1f1f1;
+        }
+        .cd-timeline-content p,
+        .cd-timeline-content .cd-read-more,
+        .cd-timeline-content .cd-date {
+            font-size: 14px;
+        }
+        .cd-timeline-img.cd-success {
+            background: #2ec5d3;
+        }
+        .cd-timeline-img.cd-danger {
+            background: #ec5e69;
+        }
+        .cd-timeline-img.cd-info {
+            background: #5893df;
+        }
+        .cd-timeline-img.cd-warning {
+            background: #f1c205;
+        }
+        .cd-timeline-img.cd-primary {
+            background: #9f7ce1;
+        }
+        .page-inner.full-page {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+        }
+        .user-profile-card {
+            text-align: center;
+        }
+        .user-profile-image {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        .team .team-member {
+            display: block;
+            overflow: hidden;
+            margin-bottom: 10px;
+            float: left;
+            position: relative;
+        }
+        .team .team-member .online {
+            top: 5px;
+            right: 5px;
+        }
+        .team .team-member img {
+            width: 40px;
+            float: left;
+            border-radius: 50%;
+            margin: 0 5px 0 5px;
+        }
+        .label.label-success {
+            background: #43d39e;
+        }
+        .label {
+            font-weight: 400;
+            padding: 4px 8px;
+            font-size: 11px;
+            display: inline-block;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25em;
+        }
+
+    </style>
+
+</head>
+<body>
+<div th:insert="blocks/header :: header"/>
+<div class="container">
+    <div class="page-inner no-page-title">
+        <!-- start page main wrapper -->
+        <div id="main-wrapper">
+            <div class="row">
+                <div class="col-lg-5 col-xl-3">
+                    <div class="card card-white grid-margin">
+                        <div class="card-heading clearfix">
+                            <h4 class="card-title">User Profile</h4>
+                        </div>
+                        <div class="card-body user-profile-card mb-3">
+                            <h4 th:text="${me.getUsername()}" class="text-center h6 mt-2"/>
+                            <p th:text="${me.getRole().getName()}" class="text-center small"/>
+                            <h4>Group:</h4>
+                            <br>
+                            <h3 th:text="${me.getGroup().getName()}"/>
+                            <h4>Interests:</h4>
+                            <br>
+                            <div th:each="interest: ${me.getInterestList()}">
+                                <p th:text="${interest.getName()}"/>
+                            </div>
+                            <a class="btn btn-info p-1" href="/profile/settings">Settings</a>
+                            <br>
+                            <button class="btn btn-theme btn-sm">Follow</button>
+                            <button class="btn btn-theme btn-sm">Message</button>
+                        </div>
+                        <hr />
+                        <hr />
+                        <div class="card-heading clearfix mt-3">
+                            <h4 class="card-title">About</h4>
+                        </div>
+                        <div class="card-body mb-3">
+                            <p class="mb-0">Lorem ipsum dolor sitelt amet, consectetur adipis icing elit, sed do eiusmod tempor incididunt utitily labore et dolore magna aliqua metavta.</p>
+                        </div>
+                        <hr />
+                        <div class="card-heading clearfix mt-3">
+                            <h4 class="card-title">Contact Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0 text-muted">
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">Email:</th>
+                                        <td>addyour@emailhere</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Phone:</th>
+                                        <td>(+44) 123 456 789</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Address:</th>
+                                        <td>74 Guild Street 542B, Great North Town MT.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-xl-6">
+                    <div class="card card-white grid-margin">
+
+                    </div>
+                    <div class="profile-timeline">
+                        <ul class="list-unstyled">
+                            <li class="timeline-item">
+                            </li>
+                            <li class="timeline-item">
+                                <div class="card card-white grid-margin">
+                                    <!--                                    <div class="card-body">-->
+                                    <!--                                        <div class="timeline-item-header">-->
+                                    <!--                                            <h1>Statistics</h1>-->
+                                    <!--                                        </div>-->
+                                    <!--                                        <div th:if="${statistics.getCount()>0}" class="timeline-item-post text-center ">-->
+                                    <!--                                            <p>Average</p>-->
+                                    <!--                                            <h3 th:text="${statistics.getAverage()}+' tg '"/>-->
+                                    <!--                                            <p>Total</p>-->
+                                    <!--                                            <h3  th:text="${statistics.getCount()}+' orders'"/>-->
+                                    <!--                                            <p>Minimum</p>-->
+                                    <!--                                            <h3  th:text="${statistics.getMin()}+' tg'"/>-->
+                                    <!--                                            <p>Maximum</p>-->
+                                    <!--                                            <h3 th:text="${statistics.getMax()}+' tg'"/>-->
+                                    <!--                                            <p>Sum</p>-->
+                                    <!--                                            <h3  th:text="${statistics.getSum()}+' tg'"/>-->
+                                    <!--                                        </div>-->
+                                    <!--                                        <div th:if="${statistics.getCount()==0}" class="timeline-item-post text-center ">-->
+                                    <!--                                           <p class="text text-info">Statistics will be available after you pay orders</p>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-xl-3">
+                    <div class="card card-white grid-margin">
+                        <div class="card-heading clearfix">
+                            <h4 class="card-title">Suggestions</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="team">
+                                <div class="team-member">
+                                    <div class="online on"></div>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                                </div>
+                                <div class="team-member">
+                                    <div class="online on"></div>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                                </div>
+                                <div class="team-member">
+                                    <div class="online off"></div>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-white grid-margin">
+                        <div class="card-heading clearfix">
+                            <h4 class="card-title">Some Info</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis architecto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row -->
+        </div>
+        <!-- end page main wrapper -->
+        <div class="page-footer">
+            <p>Copyright © 2020 Evince All rights reserved.</p>
+        </div>
+    </div>
+</div>
+<footer th:insert="blocks/footer :: footer"/>
+
+</body>
+</html>

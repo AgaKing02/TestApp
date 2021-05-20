@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
+            integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<header th:insert="blocks/header :: header"/>
+<div class="container">
+    <div style="width:600px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
+        <div class="card">
+            <div class="card-block" style="padding: 24px;">
+                <form name="f" action="/sign/up" method="post">
+                    <fieldset>
+                        <!-- Thymeleaf + Spring Security error display -->
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            Error occurred during authentication
+                        </div>
+
+
+                        <!-- Login Controls -->
+                        <div class="form-group">
+                            <label for="txtUsername">Username</label>
+                            <input type="text" class="form-control" id="txtUsername" name="txtUsername"
+                                   placeholder="Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtPassword">Password</label>
+                            <input type="password" class="form-control" id="txtPassword" name="txtPassword"
+                                   placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Group select</label>
+                            <select name="txtGroup" class="form-control" id="exampleFormControlSelect1">
+                                <option th:each="group :${groups}" th:value="${group.getName()}" th:text="${group.getName()}"/>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div th:each="interest:${interests}"  class="form-check form-check-inline">
+                                <input name="txtInterests" class="form-check-input" type="checkbox" id="inlineCheckbox1" th:value="${interest.getName()}">
+                                <label class="form-check-label" for="inlineCheckbox1" th:text="${interest.getName()}"/>
+                            </div>
+                        </div>
+
+
+                        <!-- Login Button -->
+                        <div class="form-actions" style="margin-top: 12px;">
+                            <button type="submit" class="btn btn-success">Sign up</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="blocks/footer :: footer"/>
+
+</body>
+</html>

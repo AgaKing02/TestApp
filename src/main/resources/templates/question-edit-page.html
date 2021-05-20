@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<title>Question</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
+        integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+<header th:insert="blocks/header :: header"/>
+<div class="container mt-5">
+    <form action="/question/edit" th:object="${question}" method="post">
+        <div class="bg-light col-8 m-3">
+            <div class="m-2"><strong>Question: </strong>
+                <input hidden type="number" th:field="*{id}" th:value="${question.getId()}">
+                <input type="text" th:field="*{text}" th:value="${question.getText()}">
+                <input hidden th:field="*{quiz}" th:value="${question.getQuiz()}">
+            </div>
+            <div class="radio" th:each="option,i: ${question.options.entrySet()}">
+                <label>
+                    <input type="radio" th:field="*{answerNumber}" th:value="${option.getKey()}">
+                    <input type="text" th:field="*{options[__${i.index}__]}" class="form-control" th:value="${option.getValue()}"/>
+                </label>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-warning p-1" value="Edit">
+    </form>
+</div>
+<div class="container shadow">
+    <h3>Statistics:</h3>
+    <div th:each="option:${statistics.entrySet()}">
+        <span th:text="${option.getKey()+'     answered '+option.getValue()+'    people it is    '+(option.getValue()*1.0/size*100.0)+'%'}"/>
+    </div>
+</div>
+<footer th:insert="blocks/footer :: footer"/>
+</body>
+
+</html>

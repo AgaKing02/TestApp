@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<title>Quiz</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
+        integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+<header th:insert="blocks/header :: header"/>
+<div class="container mt-5">
+    <form th:object="${form}" th:action="${'/pass/'+quiz}" method="post">
+        <div>
+            <h2 th:text="${quiz.getName()}"></h2>
+            <h6 class=" badge badge-dark">#<span th:text="${quiz.tag}"></span></h6>
+            <p><strong>Description: </strong><span th:text="${quiz.text}"></span></p>
+        </div>
+
+        <div class="bg-light col-8 m-3" th:each="question : ${form.getQuestionDtos()}">
+            <div class="m-2"><strong>Question: </strong>
+                <span th:text="${question.text}"></span>
+            </div>
+            <div class="radio" th:object="${questionDto}" th:each="option,i: ${question.options.entrySet()}">
+                    <input type="radio" th:name="${question.getId()}" th:value="${option.getKey()}"
+                           th:text="${option.getValue()}" >
+            </div>
+        </div>
+        <button type="submit" class="btn btn-dark">Pass</button>
+
+    </form>
+</div>
+<footer th:insert="blocks/footer :: footer"/>
+</body>
+<script>
+    $(document).ready(function () {
+        var counter = 1;
+
+        $("#addrow").on("click", function () {
+            var newRow = $("<tr>");
+            var cols = "";
+
+
+            cols += '<td><input type="radio" name="answerNumber" value="' + counter + '"><input type="text" class="form-control" name="options[' + counter + ']"/></td>';
+
+            cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
+            newRow.append(cols);
+            $("table.order-list").append(newRow);
+            counter++;
+        });
+
+
+        $("table.order-list").on("click", ".ibtnDel", function (event) {
+            $(this).closest("tr").remove();
+            counter -= 1
+        });
+
+
+    });
+
+</script>
+</html>
