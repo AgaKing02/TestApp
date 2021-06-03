@@ -68,7 +68,6 @@ public class AuthenticationController {
                 roleRepository.getRoleByName("USER"),
                 groupRepository.getGroupByName(group),
                 interestList);
-
         userService.save(user);
         return "redirect:/login";
     }
