@@ -1,7 +1,6 @@
 package com.example.onlinevote.controllers;
 
 
-
 import com.example.onlinevote.models.Group;
 import com.example.onlinevote.models.Interest;
 import com.example.onlinevote.models.User;
@@ -45,10 +44,11 @@ public class AuthenticationController {
 
     @GetMapping("/sign/up")
     public String signUpPage(Model model) {
-        Iterable<Group> groupList=groupRepository.findAll();
-        Iterable<Interest> interests=interestRepository.findAll();
-        model.addAttribute("groups",groupList);
-        model.addAttribute("interests",interests);
+        Iterable<Group> groupList = groupRepository.findAll();
+
+        Iterable<Interest> interests = interestRepository.findAll();
+        model.addAttribute("groups", groupList);
+        model.addAttribute("interests", interests);
         return "signup-page";
     }
 
@@ -57,6 +57,9 @@ public class AuthenticationController {
                          @RequestParam(name = "txtPassword") String txtPassword,
                          @RequestParam(name = "txtInterests") List<String> interests,
                          @RequestParam(name = "txtGroup") String group) {
+        if (userService.getUserByUsername(txtUsername) != null) {
+            return "error";
+        }
         List<Interest> interestList = new ArrayList<>();
         interests.forEach(e -> interestList.add(interestRepository.getByName(e)));
 
