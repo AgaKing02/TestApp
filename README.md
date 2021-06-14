@@ -1,3 +1,7 @@
+
+**You can clone this project** (using button clone)
+
+
 Quiz App
 Spring MVC is an application for creating tests and surveys on various topics.
 
@@ -22,7 +26,6 @@ Implement the process of passing the test by the user;
 Dashboard with the points scored in the tests;
 Appeal if there are conclusions about the student's mistake;
 
-You can clone this project 
 
 
 
